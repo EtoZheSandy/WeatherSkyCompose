@@ -17,7 +17,6 @@ private data class IndexWeatherData(
 )
 
 
-@RequiresApi(Build.VERSION_CODES.O)
 fun WeatherDto.toWeatherDataMap() : Map<Int, List<WeatherData>> {
     return hourly.time.mapIndexed { index, time ->
         val temperature = hourly.temperature_2m[index]
@@ -46,7 +45,6 @@ fun WeatherDto.toWeatherDataMap() : Map<Int, List<WeatherData>> {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 fun WeatherDto.toWeatherInfo(): WeatherInfo {
     val weatherDataMap = this.toWeatherDataMap()
     val now = LocalDateTime.now()
