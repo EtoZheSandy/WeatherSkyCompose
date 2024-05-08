@@ -22,7 +22,7 @@ fun WeatherDto.toWeatherDataMap() : Map<Int, List<WeatherData>> {
         val temperature = hourly.temperature_2m[index]
         val weatherCode = hourly.weather_code[index]
         val windSpeed = hourly.wind_speed_10m[index]
-        val pressure = hourly.surface_pressure[index]
+        val pressure = hourly.pressure_msl[index]
         val humidity = hourly.relative_humidity_2m[index]
         //длинна у списков одинаковая поэтому можем использовать index
         IndexWeatherData(

@@ -6,5 +6,5 @@ data class Hourly(
     val time: List<String>,
     val wind_speed_10m: List<Double>,
     val weather_code: List<Int>,
-    val surface_pressure: List<Double>
+    val pressure_msl: List<Double>
 )
