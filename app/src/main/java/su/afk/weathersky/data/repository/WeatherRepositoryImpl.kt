@@ -1,5 +1,6 @@
 package su.afk.weathersky.data.repository
 
+import android.util.Log
 import com.plcoding.weatherapp.domain.util.Resource
 import su.afk.weathersky.data.mappers.toWeatherDataMap
 import su.afk.weathersky.data.mappers.toWeatherInfo
@@ -13,6 +14,7 @@ class WeatherRepositoryImpl @Inject constructor(
 ) : WeatherRepository {
 
     override suspend fun getWeatherData(lat: Double, long: Double): Resource<WeatherInfo> {
+        Log.d("TAG", "getWeatherData: $lat $long")
         return try {
             Resource.Success(
                 data = api.getWeather(

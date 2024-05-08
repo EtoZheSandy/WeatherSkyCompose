@@ -34,7 +34,7 @@ class DefaultLocationTracker @Inject constructor(
                 locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
 
 
-        if(!hasAccessCoarseLocationPermission || !hasAccessFineLocationPermission || isGpsEnable){
+        if(!hasAccessCoarseLocationPermission || !hasAccessFineLocationPermission || !isGpsEnable){
             return null
         }
 
