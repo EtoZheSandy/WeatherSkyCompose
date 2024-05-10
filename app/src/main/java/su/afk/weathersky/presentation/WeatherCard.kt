@@ -47,15 +47,29 @@ fun WeatherCard(
                     .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    text = "Today ${
-                        weatherData.time.format(
-                            DateTimeFormatter.ofPattern("HH:mm")
-                        )
-                    }",
-                    modifier = Modifier.align(Alignment.End),
-                    color = Color.White
-                )
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth() // Занимаем всю ширину
+                ) {
+                    Text(
+                        text = "City: ${
+                            weatherData.time.format(
+                                DateTimeFormatter.ofPattern("HH:mm")
+                            )
+                        }",
+                        color = Color.White
+                        // TODO: Добавить значек вопроса что бы можно было кликнуть и вызвать dialog для ввода города
+                    )
+                    Text(
+                        text = "Today ${
+                            weatherData.time.format(
+                                DateTimeFormatter.ofPattern("HH:mm")
+                            )
+                        }",
+//                        modifier = Modifier.align(Alignment.End),
+                        color = Color.White
+                    )
+                }
                 Spacer(modifier = Modifier.height(16.dp))
                 Image(
                     painter = painterResource(id = weatherData.weatherType.iconRes),

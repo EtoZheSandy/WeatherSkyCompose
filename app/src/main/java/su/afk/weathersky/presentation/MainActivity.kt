@@ -63,6 +63,10 @@ class MainActivity : ComponentActivity() {
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         WeatherForecast(state = viewModel.state)
+                        // TODO: Скролить до нужного часа а те часы что прошли что бы были слева
+
+                        // TODO: Снизу сделать вывод на следующие 3 дня в виде трех кнопок
+                        // TODO: При клике открывать новую страничку где будут показываться часы и темпа в column
                     }
 
                     if (viewModel.state.isLoading) {
