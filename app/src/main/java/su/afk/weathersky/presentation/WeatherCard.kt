@@ -59,6 +59,7 @@ fun WeatherCard(
                         }",
                         color = Color.White
                         // TODO: Добавить значек вопроса что бы можно было кликнуть и вызвать dialog для ввода города
+                        // TODO: https://geocoding-api.open-meteo.com/v1/search?name=Moscow&count=1&language=en&format=json
                     )
                     Text(
                         text = "Today ${
