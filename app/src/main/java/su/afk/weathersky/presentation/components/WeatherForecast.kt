@@ -1,4 +1,4 @@
-package su.afk.weathersky.presentation
+package su.afk.weathersky.presentation.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -17,11 +17,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import su.afk.weathersky.domain.weather.WeatherData
+import su.afk.weathersky.presentation.WeatherState
 import java.time.format.DateTimeFormatter
 
 @Composable

@@ -29,8 +29,9 @@ class WeatherViewModel @Inject constructor(
                 error = null
             )
             locationTracker.getCurrentLocation()?.let { location ->
-                Log.d("TAG", "$location")
-                when(val result = repository.getWeatherData(location.latitude, location.longitude)) {
+                Log.d("TAG", "location: $location")
+                val result = repository.getWeatherData(location.latitude, location.longitude)
+                when(result) {
                     is Resource.Success -> {
                         state = state.copy(
                             weatherInfo = result.data,

@@ -1,4 +1,4 @@
-package su.afk.weathersky.presentation
+package su.afk.weathersky.presentation.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -26,6 +26,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import su.afk.weathersky.R
+import su.afk.weathersky.presentation.WeatherState
 import java.time.format.DateTimeFormatter
 import kotlin.math.roundToInt
 

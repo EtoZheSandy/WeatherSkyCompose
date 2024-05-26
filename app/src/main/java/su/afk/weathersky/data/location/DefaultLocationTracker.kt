@@ -1,61 +1,116 @@
 package su.afk.weathersky.data.location
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
+import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.suspendCancellableCoroutine
 import su.afk.weathersky.domain.location.LocationTracker
 import javax.inject.Inject
 import kotlin.coroutines.resume
 
+//class DefaultLocationTracker @Inject constructor(
+//    private val locationClient: FusedLocationProviderClient,
+//    private val application: Application // для проверки пермишенов
+//) : LocationTracker {
+//
+//    override suspend fun getCurrentLocation(): Location? {
+//        val hasAccessFineLocationPermission = ContextCompat.checkSelfPermission(
+//            application,
+//            android.Manifest.permission.ACCESS_FINE_LOCATION
+//        ) == PackageManager.PERMISSION_GRANTED
+//
+//        val hasAccessCoarseLocationPermission = ContextCompat.checkSelfPermission(
+//            application,
+//            android.Manifest.permission.ACCESS_COARSE_LOCATION
+//        ) == PackageManager.PERMISSION_GRANTED
+//
+//        val locationManager = application.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+//        val isGpsEnable = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER) ||
+//                locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+//
+//        Log.d("TAG", "hasAccessCoarseLocationPermission: ${!hasAccessCoarseLocationPermission}")
+//        Log.d("TAG", "hasAccessFineLocationPermission: ${!hasAccessFineLocationPermission}")
+//        Log.d("TAG", "isGpsEnable: ${!isGpsEnable}")
+//        if(!hasAccessCoarseLocationPermission || !hasAccessFineLocationPermission || !isGpsEnable){
+//            return null
+//        }
+//
+//        return suspendCancellableCoroutine { cont ->
+//            locationClient.lastLocation.apply {
+//                if (isComplete) {
+//                    if (isSuccessful) {
+//                        cont.resume(result)
+//                    } else {
+//                        cont.resume(null)
+//                    }
+//                    return@suspendCancellableCoroutine
+//                }
+//                addOnSuccessListener {
+//                    Log.d("TAG", "it $it")
+//                    cont.resume(it)
+//                }
+//                addOnFailureListener {
+//                    cont.resume(null)
+//                }
+//                addOnCanceledListener {
+//                    cont.cancel()
+//                }
+//            }
+//        }
+//    }
+//}
+
 class DefaultLocationTracker @Inject constructor(
-    private val locationClient: FusedLocationProviderClient,
-    private val application: Application // для проверки пермишенов
+    private val application: Application
 ) : LocationTracker {
 
+    private val locationClient: FusedLocationProviderClient by lazy {
+        LocationServices.getFusedLocationProviderClient(application)
+    }
+
+    @SuppressLint("MissingPermission")
     override suspend fun getCurrentLocation(): Location? {
         val hasAccessFineLocationPermission = ContextCompat.checkSelfPermission(
             application,
-            android.Manifest.permission.ACCESS_FINE_LOCATION
+            Manifest.permission.ACCESS_FINE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
 
         val hasAccessCoarseLocationPermission = ContextCompat.checkSelfPermission(
             application,
-            android.Manifest.permission.ACCESS_COARSE_LOCATION
+            Manifest.permission.ACCESS_COARSE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
 
         val locationManager = application.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         val isGpsEnable = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER) ||
                 locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
 
+        Log.d("TAG", "hasAccessCoarseLocationPermission: $hasAccessCoarseLocationPermission")
+        Log.d("TAG", "hasAccessFineLocationPermission: $hasAccessFineLocationPermission")
+        Log.d("TAG", "isGpsEnable: $isGpsEnable")
 
-        if(!hasAccessCoarseLocationPermission || !hasAccessFineLocationPermission || !isGpsEnable){
+        if (!hasAccessCoarseLocationPermission || !hasAccessFineLocationPermission || !isGpsEnable) {
             return null
         }
 
         return suspendCancellableCoroutine { cont ->
-            locationClient.lastLocation.apply {
-                if (isComplete) {
-                    if (isSuccessful) {
-                        cont.resume(result)
-                    } else {
-                        cont.resume(null)
-                    }
-                    return@suspendCancellableCoroutine
-                }
-                addOnSuccessListener {
-                    cont.resume(it)
-                }
-                addOnFailureListener {
+            locationClient.lastLocation.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val location = task.result
+                    Log.d("TAG", "Received location: $location")
+                    cont.resume(location)
+                } else {
+                    Log.d("TAG", "Location task failed: ${task.exception}")
                     cont.resume(null)
-                }
-                addOnCanceledListener {
-                    cont.cancel()
                 }
             }
         }
