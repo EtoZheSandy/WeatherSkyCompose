@@ -15,6 +15,8 @@
 
 - Работает через Location сервис
 
+- Чистая архитектура
+
 ## Используемые технологии
 
 - Jetpack Compose
@@ -24,5 +26,5 @@
 - Dagger - Hilt
 - Retrofit
 - Coil
-- Room
+- LocationService
 
