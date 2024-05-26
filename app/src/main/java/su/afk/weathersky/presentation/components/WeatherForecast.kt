@@ -41,7 +41,7 @@ fun WeatherForecast(
         val roundedTime = if (currentTime.minute < 30) {
             currentTime.withMinute(30).withSecond(0)
         } else {
-            currentTime.withHour(currentTime.hour + 1).withMinute(0).withSecond(0)
+            currentTime.withHour(currentTime.hour).withMinute(0).withSecond(0)
         }
 
         val currentIndex = currentDay.indexOfFirst {
