@@ -29,7 +29,7 @@ fun WeatherForecast(
     state: WeatherState,
     modifier: Modifier = Modifier
 ) {
-    state.weatherInfo?.weatherdDataPerDay?.get(0)?.let { currentDay ->
+    state.weatherInfo?.weatheredDataPerDay?.get(0)?.let { currentDay ->
         Column(
             modifier = modifier
                 .fillMaxWidth()
@@ -40,7 +40,7 @@ fun WeatherForecast(
                 color = Color.White,
                 fontSize = 20.sp
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(8.dp))
             LazyRow(content = {
                 items(currentDay) {
                     weatherDate ->
@@ -85,6 +85,5 @@ fun HourWeatherItemList(
             color = textColor,
             fontWeight = FontWeight.Bold
         )
-
     }
 }

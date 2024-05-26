@@ -1,14 +1,11 @@
 package su.afk.weathersky.data.mappers
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.plcoding.weatherapp.domain.weather.WeatherType
 import su.afk.weathersky.data.remote.models.WeatherDto
 import su.afk.weathersky.domain.weather.WeatherData
 import su.afk.weathersky.domain.weather.WeatherInfo
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import kotlin.concurrent.thread
 
 
 private data class IndexWeatherData(
@@ -48,13 +45,13 @@ fun WeatherDto.toWeatherDataMap() : Map<Int, List<WeatherData>> {
 fun WeatherDto.toWeatherInfo(): WeatherInfo {
     val weatherDataMap = this.toWeatherDataMap()
     val now = LocalDateTime.now()
-    val cureentWeatherData = weatherDataMap[0]?.find {
+    val currentWeatherData = weatherDataMap[0]?.find {
         val hour = if(now.minute < 30) now.hour else now.hour + 1
         it.time.hour == hour
     }
 
     return WeatherInfo(
-        weatherdDataPerDay = weatherDataMap,
-        currentWeatherData = cureentWeatherData
+        weatheredDataPerDay = weatherDataMap,
+        currentWeatherData = currentWeatherData
     )
 }

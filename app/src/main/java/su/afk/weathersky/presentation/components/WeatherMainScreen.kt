@@ -29,13 +29,13 @@ fun WeatherMainScreen(
             state = state,
             backgroundColor = DarkBlue
         )
-        Spacer(modifier = Modifier.height(16.dp))
+//        Spacer(modifier = Modifier.height(16.dp))
 
         WeatherForecast(state = state)
         // TODO: Скролить до нужного часа а те часы что прошли что бы были слева
 
-        // TODO: Снизу сделать вывод на следующие 3 дня в виде трех кнопок
-        // TODO: При клике открывать новую страничку где будут показываться часы и темпа в column
+        Spacer(modifier = Modifier.height(8.dp))
 
+        NextDays(state = state)
     }
 }
