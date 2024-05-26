@@ -1,5 +1,6 @@
 package su.afk.weathersky.presentation.components
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,6 +11,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -22,6 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import su.afk.weathersky.domain.weather.WeatherData
 import su.afk.weathersky.presentation.WeatherState
+import java.time.LocalDateTime
+import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 @Composable
@@ -30,6 +36,21 @@ fun WeatherForecast(
     modifier: Modifier = Modifier
 ) {
     state.weatherInfo?.weatheredDataPerDay?.get(0)?.let { currentDay ->
+
+        val currentTime = LocalTime.now()
+        val roundedTime = if (currentTime.minute < 30) {
+            currentTime.withMinute(30).withSecond(0)
+        } else {
+            currentTime.withHour(currentTime.hour + 1).withMinute(0).withSecond(0)
+        }
+
+        val currentIndex = currentDay.indexOfFirst {
+            it.time.toLocalTime() >= roundedTime
+        }
+
+//        Log.d("TAG", "it.time: ${currentDay}")
+//        Log.d("TAG", "currentTime: ${LocalDateTime.now().toLocalTime()}")
+//        Log.d("TAG", "currentIndex: ${currentIndex}")
         Column(
             modifier = modifier
                 .fillMaxWidth()
@@ -41,17 +62,20 @@ fun WeatherForecast(
                 fontSize = 20.sp
             )
             Spacer(modifier = Modifier.height(8.dp))
-            LazyRow(content = {
-                items(currentDay) {
-                    weatherDate ->
-                    HourWeatherItemList(
-                        weatherData = weatherDate,
-                        modifier = Modifier
-                            .height(100.dp)
-                            .padding(horizontal = 16.dp)
-                    )
+            LazyRow(
+                // для начальной позиции скролла
+                state = rememberLazyListState(initialFirstVisibleItemIndex = currentIndex),
+                content = {
+                    itemsIndexed(currentDay) { index, weatherData ->
+                        HourWeatherItemList(
+                            weatherData = weatherData,
+                            modifier = Modifier
+                                .height(100.dp)
+                                .padding(horizontal = 16.dp)
+                        )
+                    }
                 }
-            })
+            )
         }
     }
 }

@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import su.afk.weathersky.presentation.WeatherState
-import su.afk.weathersky.presentation.WeatherViewModel
 import su.afk.weathersky.presentation.ui.theme.DarkBlue
 import su.afk.weathersky.presentation.ui.theme.LightBlue
 
@@ -32,7 +31,6 @@ fun WeatherMainScreen(
 //        Spacer(modifier = Modifier.height(16.dp))
 
         WeatherForecast(state = state)
-        // TODO: Скролить до нужного часа а те часы что прошли что бы были слева
 
         Spacer(modifier = Modifier.height(8.dp))
 
