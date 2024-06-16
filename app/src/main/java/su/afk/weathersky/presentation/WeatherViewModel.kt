@@ -21,25 +21,25 @@ class WeatherViewModel @Inject constructor(
     private val locationTracker: LocationTracker
 ): ViewModel() {
 
-    var state by mutableStateOf(WeatherState())
+    var stateWeather by mutableStateOf<WeatherState>(WeatherState.LoadingState())
+        private set
+
+    var stateNextDay by mutableStateOf<NextDayState>(NextDayState.LoadingState())
         private set
 
     fun loadWeatherInfo() {
         viewModelScope.launch {
-            state = state.copy(
-                isLoading = true,
-                error = null
-            )
+            stateWeather = WeatherState.LoadingState()
+            stateNextDay = NextDayState.LoadingState()
+
             locationTracker.getCurrentLocation()?.let { location ->
                 Log.d("loadWeatherInfo", "location: $location")
 
                 getCurrentWeather(location)
                 getNextDays(location)
             } ?: kotlin.run {
-                state = state.copy(
-                    isLoading = false,
-                    error = "Не удалось получить местоположение"
-                )
+                stateWeather = WeatherState.ErrorState("Не удалось загрузить данные")
+                stateNextDay = NextDayState.ErrorState("Не удалось загрузить данные")
             }
         }
     }
@@ -50,18 +50,10 @@ class WeatherViewModel @Inject constructor(
 
             when(resultCurrentWeather) {
                 is Resource.Success -> {
-                    state = state.copy(
-                        weatherInfo = resultCurrentWeather.data,
-                        isLoading = false,
-                        error = null
-                    )
+                    stateWeather = WeatherState.WeatherInfoState(resultCurrentWeather.data)
                 }
                 is Resource.Error -> {
-                    state = state.copy(
-                        weatherInfo = null,
-                        isLoading = false,
-                        error = resultCurrentWeather.message
-                    )
+                    stateWeather = WeatherState.ErrorState(resultCurrentWeather.message)
                 }
             }
         }
@@ -73,18 +65,10 @@ class WeatherViewModel @Inject constructor(
 
             when(resultNextDays) {
                 is Resource.Success -> {
-                    state = state.copy(
-                        nextDays = resultNextDays.data,
-                        isLoadingNextDays = false,
-                        errorNextDays = null
-                    )
+                    stateNextDay = NextDayState.WeatherInfoState(resultNextDays.data)
                 }
                 is Resource.Error -> {
-                    state = state.copy(
-                        nextDays = null,
-                        isLoadingNextDays = false,
-                        errorNextDays = resultNextDays.message
-                    )
+                    stateNextDay = NextDayState.ErrorState(resultNextDays.message)
                 }
             }
         }

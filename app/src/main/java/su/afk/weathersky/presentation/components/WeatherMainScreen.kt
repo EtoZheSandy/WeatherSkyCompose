@@ -9,13 +9,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import su.afk.weathersky.presentation.WeatherState
+import su.afk.weathersky.domain.weather.WeatherInfo
+import su.afk.weathersky.presentation.NextDayState
 import su.afk.weathersky.presentation.ui.theme.DarkBlue
 import su.afk.weathersky.presentation.ui.theme.LightBlue
 
 @Composable
 fun WeatherMainScreen(
-    state: WeatherState,
+    stateWeather: WeatherInfo,
+    stateNextDay: NextDayState,
 ) {
     Column(
         modifier = Modifier
@@ -24,14 +26,14 @@ fun WeatherMainScreen(
             .padding(top = 40.dp)
     ) {
         WeatherCard(
-            state = state,
+            state = stateWeather,
             backgroundColor = DarkBlue
         )
 
-        WeatherForecast(state = state)
+        WeatherForecast(state = stateWeather)
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        NextDays(state = state)
+        NextDays(stateNextDay = stateNextDay)
     }
 }

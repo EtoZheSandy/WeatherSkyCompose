@@ -26,17 +26,18 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import su.afk.weathersky.R
+import su.afk.weathersky.domain.weather.WeatherInfo
 import su.afk.weathersky.presentation.WeatherState
 import java.time.format.DateTimeFormatter
 import kotlin.math.roundToInt
 
 @Composable
 fun WeatherCard(
-    state: WeatherState,
+    state: WeatherInfo,
     backgroundColor: Color,
     modifier: Modifier = Modifier,
 ) {
-    state.weatherInfo?.currentWeatherData?.let { weatherData ->
+    state?.currentWeatherData?.let { weatherData ->
         Card(
             colors = CardDefaults.cardColors(backgroundColor),
             shape = RoundedCornerShape(20.dp),

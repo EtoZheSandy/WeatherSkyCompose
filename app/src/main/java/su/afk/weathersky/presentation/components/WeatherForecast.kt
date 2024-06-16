@@ -22,16 +22,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import su.afk.weathersky.domain.weather.WeatherData
-import su.afk.weathersky.presentation.WeatherState
+import su.afk.weathersky.domain.weather.WeatherInfo
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 @Composable
 fun WeatherForecast(
-    state: WeatherState,
+    state: WeatherInfo,
     modifier: Modifier = Modifier,
 ) {
-    state.weatherInfo?.weatheredDataPerDay?.get(0)?.let { currentDay ->
+    state?.weatheredDataPerDay?.get(0)?.let { currentDay ->
 
         val currentTime = LocalTime.now()
         val roundedTime = if (currentTime.minute < 30) {

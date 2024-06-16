@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import dagger.hilt.android.AndroidEntryPoint
+import su.afk.weathersky.presentation.WeatherState
 import su.afk.weathersky.presentation.WeatherViewModel
 import su.afk.weathersky.presentation.components.ErrorScreen
 import su.afk.weathersky.presentation.components.LoadingScreen
@@ -46,22 +47,24 @@ class MainActivity : ComponentActivity() {
         setContent {
             WeatherSkyTheme {
                 val context = LocalContext.current
-                Box(modifier = Modifier.fillMaxSize()) {
-                    when {
-                        viewModel.state.isLoading -> {
-                            LoadingScreen(modifier = Modifier.align(Alignment.Center))
-                        }
+                val stateWeather = viewModel.stateWeather
+                val stateNextDay = viewModel.stateNextDay
 
-                        viewModel.state.error != null -> {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    when(stateWeather) {
+                        is WeatherState.ErrorState -> {
                             ErrorScreen(
-                                errorText = viewModel.state.error ?: "Неизвестная ошибка",
+                                errorText = stateWeather.error!!,
                                 context = context,
                                 onRetryClick = { viewModel.loadWeatherInfo() }
                             )
                         }
-
-                        viewModel.state.weatherInfo != null -> {
-                            WeatherMainScreen(state = viewModel.state)
+                        is WeatherState.LoadingState -> {
+                            LoadingScreen(modifier = Modifier.align(Alignment.Center))
+                        }
+                        is WeatherState.WeatherInfoState -> {
+                            WeatherMainScreen(stateWeather = stateWeather.weatherInfo!!,
+                                stateNextDay = stateNextDay)
                         }
                     }
                 }
