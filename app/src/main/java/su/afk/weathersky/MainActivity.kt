@@ -54,7 +54,7 @@ class MainActivity : ComponentActivity() {
 
                         viewModel.state.error != null -> {
                             ErrorScreen(
-                                errorText = viewModel.state.error ?: "None",
+                                errorText = viewModel.state.error ?: "Неизвестная ошибка",
                                 context = context,
                                 onRetryClick = { viewModel.loadWeatherInfo() }
                             )
@@ -69,6 +69,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    // если перешли в настройки и дали разрешение то при возврате делаем еще один запрос
     override fun onResume() {
         viewModel.loadWeatherInfo()
         super.onResume()

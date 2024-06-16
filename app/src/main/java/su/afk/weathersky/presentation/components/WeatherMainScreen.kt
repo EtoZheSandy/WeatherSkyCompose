@@ -15,8 +15,7 @@ import su.afk.weathersky.presentation.ui.theme.LightBlue
 
 @Composable
 fun WeatherMainScreen(
-    modifier: Modifier = Modifier,
-    state: WeatherState
+    state: WeatherState,
 ) {
     Column(
         modifier = Modifier
@@ -28,7 +27,6 @@ fun WeatherMainScreen(
             state = state,
             backgroundColor = DarkBlue
         )
-//        Spacer(modifier = Modifier.height(16.dp))
 
         WeatherForecast(state = state)
 

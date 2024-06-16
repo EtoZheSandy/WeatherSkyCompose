@@ -22,7 +22,6 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun ErrorScreen(
-    modifier: Modifier = Modifier,
     context: Context,
     errorText: String,
     onRetryClick: () -> Unit
@@ -50,7 +49,7 @@ fun ErrorScreen(
                 Text(text = "Проверить настройки местоположения")
             }
             Spacer(modifier = Modifier.padding(6.dp))
-            Button(onClick = onRetryClick) { // Добавляем кнопку для повторной попытки загрузки
+            Button(onClick = onRetryClick) {
                 Text(text = "Повторить попытку")
             }
         }

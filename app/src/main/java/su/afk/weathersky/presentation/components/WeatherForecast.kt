@@ -1,6 +1,5 @@
 package su.afk.weathersky.presentation.components
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,10 +9,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -26,14 +23,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import su.afk.weathersky.domain.weather.WeatherData
 import su.afk.weathersky.presentation.WeatherState
-import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 @Composable
 fun WeatherForecast(
     state: WeatherState,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     state.weatherInfo?.weatheredDataPerDay?.get(0)?.let { currentDay ->
 
@@ -48,9 +44,6 @@ fun WeatherForecast(
             it.time.toLocalTime() >= roundedTime
         }
 
-//        Log.d("TAG", "it.time: ${currentDay}")
-//        Log.d("TAG", "currentTime: ${LocalDateTime.now().toLocalTime()}")
-//        Log.d("TAG", "currentIndex: ${currentIndex}")
         Column(
             modifier = modifier
                 .fillMaxWidth()
@@ -67,7 +60,7 @@ fun WeatherForecast(
                 state = rememberLazyListState(initialFirstVisibleItemIndex = currentIndex),
                 content = {
                     itemsIndexed(currentDay) { index, weatherData ->
-                        HourWeatherItemList(
+                        HourWeatherListItem(
                             weatherData = weatherData,
                             modifier = Modifier
                                 .height(100.dp)
@@ -81,10 +74,10 @@ fun WeatherForecast(
 }
 
 @Composable
-fun HourWeatherItemList(
+fun HourWeatherListItem(
     weatherData: WeatherData,
     modifier: Modifier = Modifier,
-    textColor: Color = Color.White
+    textColor: Color = Color.White,
 ) {
     val formattedTime = remember(weatherData) {
         weatherData.time.format(
@@ -100,7 +93,8 @@ fun HourWeatherItemList(
             text = formattedTime,
             color = Color.LightGray
         )
-        Image(painter = painterResource(id = weatherData.weatherType.iconRes),
+        Image(
+            painter = painterResource(id = weatherData.weatherType.iconRes),
             contentDescription = null,
             modifier = Modifier.width(40.dp)
         )

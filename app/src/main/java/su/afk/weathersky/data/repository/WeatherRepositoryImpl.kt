@@ -16,7 +16,7 @@ class WeatherRepositoryImpl @Inject constructor(
 ) : WeatherRepository {
 
     override suspend fun getWeatherData(lat: Double, long: Double): Resource<WeatherInfo> {
-        Log.d("TAG", "getWeatherData: $lat $long")
+        Log.d("getWeatherData", "getWeatherData: $lat $long")
         return try {
             Resource.Success(
                 data = api.getWeather(
@@ -26,18 +26,22 @@ class WeatherRepositoryImpl @Inject constructor(
             )
         } catch(e: Exception) {
             e.printStackTrace()
-            Resource.Error(e.message ?: "Произошло неизвественая ошибка")
+            Resource.Error(e.message ?: ERROR_TEXT)
         }
     }
 
     override suspend fun getNextDaysData(lat: Double, long: Double): Resource<NextDays> {
-        Log.d("TAG", "getWeatherData: $lat $long")
+        Log.d("getNextDaysData", "getWeatherData: $lat $long")
         return try {
             val nextDaysData = api.getNextDays(latitude = lat, longitude = long).toNextDaysMapper()
             Resource.Success(data = nextDaysData)
         } catch(e: Exception) {
             e.printStackTrace()
-            Resource.Error(e.message ?: "Произошло неизвественая ошибка")
+            Resource.Error(e.message ?: ERROR_TEXT)
         }
+    }
+
+    companion object {
+        const val ERROR_TEXT = "Произошло неизвественая ошибка"
     }
 }

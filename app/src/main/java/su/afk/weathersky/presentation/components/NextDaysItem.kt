@@ -1,11 +1,9 @@
 package su.afk.weathersky.presentation.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -20,8 +18,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import su.afk.weathersky.R
-import su.afk.weathersky.data.remote.models.nextDays.Daily
 import su.afk.weathersky.domain.weather.OneDayData
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -29,7 +25,6 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun NextDaysItem(
-    modifier: Modifier = Modifier,
     day: OneDayData,
 ) {
     val formattedTime = remember(day) {
@@ -45,7 +40,6 @@ fun NextDaysItem(
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-//            horizontalArrangement = Arrangement.SpaceEvenly // Расположение элементов по горизонтали
         ) {
             Image(painter = painterResource(id = day.weatherType.iconRes),
                 contentDescription = null,
@@ -60,9 +54,7 @@ fun NextDaysItem(
                 fontWeight = FontWeight.Bold
             )
 
-//            Spacer(modifier = Modifier.width(8.dp))
-
-            Spacer(modifier = Modifier.weight(1f)) // Создание пустого пространства
+            Spacer(modifier = Modifier.weight(1f))
 
             Text(
                 text = day.weatherType.weatherDesc,
@@ -71,7 +63,7 @@ fun NextDaysItem(
                 fontSize = 14.sp
             )
 
-            Spacer(modifier = Modifier.weight(1f)) // Создание пустого пространства
+            Spacer(modifier = Modifier.weight(1f))
             Text(
                 textAlign = TextAlign.End,
                 text = formattedTime,

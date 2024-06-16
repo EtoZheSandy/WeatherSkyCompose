@@ -31,7 +31,7 @@ class WeatherViewModel @Inject constructor(
                 error = null
             )
             locationTracker.getCurrentLocation()?.let { location ->
-                Log.d("TAG", "location: $location")
+                Log.d("loadWeatherInfo", "location: $location")
 
                 getCurrentWeather(location)
                 getNextDays(location)
@@ -41,8 +41,6 @@ class WeatherViewModel @Inject constructor(
                     error = "Не удалось получить местоположение"
                 )
             }
-
-
         }
     }
 
@@ -91,4 +89,5 @@ class WeatherViewModel @Inject constructor(
             }
         }
     }
+
 }
